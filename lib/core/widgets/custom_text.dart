@@ -13,6 +13,8 @@ class CustomText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(text,
     maxLines: maxLines,
+    overflow: TextOverflow.clip,
+    
     style: TextStyle(
       color: color,
       fontSize: fontSize,
