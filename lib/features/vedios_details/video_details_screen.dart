@@ -1,11 +1,13 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:skeletonizer/skeletonizer.dart';
+
 import 'package:video_player/video_player.dart';
 import 'package:youtube_clone_app/core/connstants/app_consts.dart';
+
 
 
 class VideoDetailsScreen extends StatefulWidget {
@@ -32,11 +34,11 @@ class _VideoDetailsScreenState extends State<VideoDetailsScreen> {
 
     final json = jsonDecode(response.body) as Map<String, dynamic>?;
     if (json == null ||json['videos'] == null|| json['videos']['items'] == null) {
-      throw Exception('Invalid response');
+      log('Invalid response');
     }
-    final videoList= json['videos']['items'] ;
+    final videoList= json!['videos']['items'] ;
     if (videoList.isEmpty || videoList[0]['url'] == null) {
-      throw Exception('No videos found');
+      log('No videos found');
     }
     final videoLink = videoList[0]['url'] ;
 
