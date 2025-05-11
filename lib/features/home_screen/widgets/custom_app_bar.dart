@@ -2,12 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget {
-  const CustomAppBar({super.key, required this.searchController, required this.focusNode, this.onTap, this.onSubmitted});
+  const CustomAppBar({super.key, required this.searchController, required this.focusNode, this.onTap, this.onSubmitted, required this.suffix});
 
   final TextEditingController searchController ;
   final FocusNode focusNode ;
   final void Function()? onTap;
   final void Function(String)? onSubmitted;
+  final Widget suffix;
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +28,7 @@ class CustomAppBar extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 8),
                   child: Icon(CupertinoIcons.search, color: Colors.black54,size: 20,),
                 ),
-                suffix:  Padding(
-                  padding: const EdgeInsets.only(right: 8),
-                  child: Icon(Icons.cancel_outlined, color: Colors.redAccent,size: 20,),
-                ),
+                suffix: suffix,
                 style: TextStyle(color: Colors.black),
                 decoration: BoxDecoration(
                   color: Colors.white,

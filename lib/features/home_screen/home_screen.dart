@@ -1,11 +1,12 @@
 import 'dart:convert';
-import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:youtube_clone_app/core/connstants/app_consts.dart';
 import 'package:youtube_clone_app/core/video_item.dart';
 import 'package:youtube_clone_app/features/home_screen/widgets/custom_app_bar.dart';
+import 'package:youtube_clone_app/features/vedios_details/video_details_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,6 +20,9 @@ class _HomeScreenState extends State<HomeScreen> {
   FocusNode focusNode = FocusNode();
 
   List items = [];
+
+  bool isClear = false;
+  bool isLoading = false;
 
   /// search video
   Future<void> searchVideos(String query) async {
@@ -58,6 +62,9 @@ class _HomeScreenState extends State<HomeScreen> {
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
+        setState(() {
+          isClear = false;
+        });
       },
       child: Scaffold(
         appBar: AppBar(
@@ -65,22 +72,53 @@ class _HomeScreenState extends State<HomeScreen> {
             searchController: searchController,
             focusNode: focusNode,
             onTap: () {
+              setState(() {
+                isClear = true;
+              });
               // focusNode.requestFocus();
             },
-            onSubmitted: (value) {},
+            onSubmitted: (value) {
+              setState(() {
+                searchVideos(value);
+              });
+            },
+             suffix: isClear ? Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        searchController.clear();
+                      });
+                    },
+                    icon: const Icon(Icons.cancel, color: Colors.redAccent, size: 18,),
+                  ),
+                ):SizedBox.shrink(),
           ),
         ),
-        body: ListView.builder(
+        body: isLoading ? const Center(child: CupertinoActivityIndicator()) : ListView.builder(
           itemCount: items.length,
           itemBuilder: (context, index) {
             final item = items[index];
-            return VideoItem(
-              videoImage: item['thumbnails'][0]['url'],
-              videoTitle: item['title'],
-              channelName: item['channel']['name'],
-              channelImage: item['channel']['avatar'][0]['url'],
-              timing: item['lengthText'],
-              videoViews: item['viewCountText'],
+            final id = item['id'];
+            return GestureDetector(
+              onTap: () async {
+                setState(() {
+                  isLoading = true;
+                });
+               await Navigator.push(context, MaterialPageRoute(builder: (context) => VideoDetailsScreen(videoId:id ,),));
+                setState(() {
+                  isLoading = false;
+                });
+              },
+              child: VideoItem(
+                videoImage: item['thumbnails'][0]['url'],
+                videoTitle: item['title'],
+                channelName: item['channel']['name'],
+                channelImage: item['channel']['avatar'][0]['url'],
+                timing: item['publishedTimeText'],
+                videoViews: item['viewCountText'],
+                duration: item['lengthText'],
+              ),
             );
           },
         ),

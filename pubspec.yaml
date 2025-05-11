@@ -28,11 +28,13 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  cupertino_icons: ^1.0.8
   auto_size_text: ^3.0.0
+  cupertino_icons: ^1.0.8
   flutter:
     sdk: flutter
   http: ^1.4.0
+  skeletonizer: ^1.4.3
+  video_player: ^2.9.5
 
 dev_dependencies:
   flutter_launcher_icons: ^0.14.3

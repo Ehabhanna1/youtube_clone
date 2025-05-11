@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:youtube_clone_app/core/widgets/custom_text.dart';
 
 class VideoItem extends StatelessWidget {
-  const VideoItem({super.key, required this.videoImage, required this.videoTitle, required this.channelName, required this.channelImage, required this.videoViews, required this.timing});
+  const VideoItem({super.key, required this.videoImage, required this.videoTitle, required this.channelName, required this.channelImage, required this.videoViews, required this.timing, required this.duration});
 
 
-  final String videoImage,videoTitle,channelName,channelImage,videoViews,timing;
+  final String videoImage,videoTitle,channelName,channelImage,videoViews,timing,duration;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class VideoItem extends StatelessWidget {
                   color: Colors.black12,
                   borderRadius: BorderRadius.circular(5),
                 ),
-                child: CustomText(text: "60:00", fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
+                child: CustomText(text: duration, fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
               ),
             )
           ],
@@ -67,7 +67,23 @@ class VideoItem extends StatelessWidget {
                   ),
                 ),
                
-                CustomText(text: "$channelName  $videoViews   $timing", fontSize: 12, fontWeight: FontWeight.normal, color: Colors.grey),
+                SizedBox(
+                  width: size.width * 0.7,
+                  child: AutoSizeText(
+                      "$channelName . $videoViews . $timing",
+                      minFontSize: 13,
+                      maxFontSize: double.infinity,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey,
+                      ),
+                  
+                  
+                   
+                  ),
+                ),
               ],
              ),
               
